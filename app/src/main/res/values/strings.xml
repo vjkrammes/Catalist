@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Catalist</string>
+    <string name="unexpected_error">An unexpected error has occurred</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_date">Select Date</string>
+</resources>
