@@ -43,7 +43,7 @@ fun ItemCard(
             .background(backgroundColor.faded(backgroundAlpha))
             .padding(all = 8.dp)
             .fillMaxWidth()
-            .height(rowHeight),
+            .defaultMinSize(minWidth = rowHeight),
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
@@ -85,9 +85,7 @@ fun ItemCard(
                 horizontalAlignment = Alignment.End,
                 modifier = Modifier.weight(0.333333f)
             ) {
-                Row {
-                    Annotations(item = item)
-                }
+                Annotations(item = item)
                 if (item.hasDueDate()) {
                     Text(
                         text = displayDate(item.dueDate, SimpleDateFormat("yyyy/MM/dd")),

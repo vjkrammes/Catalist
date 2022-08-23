@@ -95,6 +95,10 @@ fun RootPage(
         doRenameCategory(renameState.value.category, renameState.value.newName)
     }
 
+    fun showOverdue() {
+        navController.navigate("dueitems")
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -113,7 +117,10 @@ fun RootPage(
                             )
                         },
                         scaffoldState = scaffoldState,
-                        scope = scope
+                        scope = scope,
+                        dueCount = state.dueCount,
+                        overdueCount = state.overdueCount,
+                        showOverdue = { showOverdue() }
                     )
                 },
                 floatingActionButton = {

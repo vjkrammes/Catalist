@@ -30,6 +30,12 @@ interface ItemDao {
     @Query("select count(*) from items where categoryId = :categoryId")
     fun countForCategory(categoryId: Int): Int
 
+    @Query("select count(*) from items where listId = :listId and dueDate > 10101 and dueDate < :dueDate and complete = 0")
+    fun itemCountByDueDate(listId: Int, dueDate: Int): Int
+
+    @Query("select * from items where listId = :listId and dueDate > 10101 and dueDate < :dueDate and complete = 0")
+    fun itemsByDueDate(listId: Int, dueDate: Int): List<Item>
+
     @Insert
     fun insert(item: Item)
 

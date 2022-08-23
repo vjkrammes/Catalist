@@ -203,4 +203,24 @@ class ItemRepository @Inject constructor(
             }
         }
     }
+
+    override suspend fun itemCountByDueDate(listId: Int, dueDate: Int): Int {
+        return withContext(Dispatchers.IO) {
+            try {
+                return@withContext itemDao.itemCountByDueDate(listId, dueDate)
+            } catch (_: Exception) {
+                return@withContext 0
+            }
+        }
+    }
+
+    override suspend fun itemsByDueDate(listId: Int, dueDate: Int): List<Item> {
+        return withContext(Dispatchers.IO) {
+            try {
+                return@withContext finish(itemDao.itemsByDueDate(listId, dueDate))
+            } catch (_: Exception) {
+                return@withContext emptyList()
+            }
+        }
+    }
 }

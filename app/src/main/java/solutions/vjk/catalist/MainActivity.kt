@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
 
     private val assigneeDetailViewModel: AssigneeDetailViewModel by viewModels()
     private val categoryDetailViewModel: CategoryDetailViewModel by viewModels()
+    private val dueItemViewModel: DueItemViewModel by viewModels()
     private val editItemViewModel: EditItemViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
     private val manageAssigneesViewModel: ManageAssigneesViewModel by viewModels()
@@ -85,6 +86,24 @@ class MainActivity : ComponentActivity() {
                             mainViewModel.switchToList(listName)
                             navController.navigate("root")
                         }
+                    }
+                    composable(
+                        route = "dueitems",
+                        enterTransition = {
+                            standardEnterTransition
+                            fadeIn(animationSpec = tween(300))
+                        },
+                        popExitTransition = {
+                            standardExitTransition
+                            fadeOut(animationSpec = tween(300))
+                        }
+                    ) {
+                        dueItemViewModel.load(listId = mainViewModel.state.value.currentList.id)
+                        DueItemPage(
+                            state = dueItemViewModel.state.value,
+                            navController = navController,
+                            toastMessage = dueItemViewModel.toastMessage
+                        )
                     }
                     composable(route = "openlist",
                         enterTransition = {

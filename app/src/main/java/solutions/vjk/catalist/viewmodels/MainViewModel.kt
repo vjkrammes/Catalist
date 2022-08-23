@@ -2,6 +2,7 @@ package solutions.vjk.catalist.viewmodels
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,7 +45,9 @@ class MainViewModel @Inject constructor(
             categories = emptyList(),
             items = emptyList(),
             isLoading = true,
-            errorMessage = null
+            errorMessage = null,
+            dueCount = 0,
+            overdueCount = 0
         )
     )
     val state = _state.asState()
@@ -109,6 +112,15 @@ class MainViewModel @Inject constructor(
                     val items = itemRepository.getForList(list.id)
                     val lists = listRepository.get()
                     val categories = categoryRepository.getForList(list.id).sortedBy { it.name }
+                    val sevendaysago = Calendar.getInstance()
+                    sevendaysago.add(Calendar.DAY_OF_YEAR, 7)
+                    val sevendays = sevendaysago.toInt()
+                    val due =
+                        itemRepository.itemCountByDueDate(list.id, sevendays)
+                    val overdue = itemRepository.itemCountByDueDate(
+                        list.id,
+                        Calendar.getInstance().toInt()
+                    )
                     withContext(Dispatchers.Main) {
                         _state.value = state.value.copy(
                             currentList = list,
@@ -116,7 +128,9 @@ class MainViewModel @Inject constructor(
                             categories = categories.toList(),
                             items = items.toList(),
                             isLoading = false,
-                            errorMessage = null
+                            errorMessage = null,
+                            dueCount = due,
+                            overdueCount = overdue
                         )
                     }
                 }
@@ -129,10 +143,22 @@ class MainViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 val categories = categoryRepository.getForList(state.value.currentList.id)
                 val items = itemRepository.getForList(state.value.currentList.id)
-                _state.value = state.value.copy(
-                    categories = categories.sortedBy { it.name }.toList(),
-                    items = items.toList()
+                val sevendaysago = Calendar.getInstance()
+                sevendaysago.add(Calendar.DAY_OF_YEAR, 7)
+                val sevendays = sevendaysago.toInt()
+                val due = itemRepository.itemCountByDueDate(state.value.currentList.id, sevendays)
+                val overdue = itemRepository.itemCountByDueDate(
+                    state.value.currentList.id,
+                    Calendar.getInstance().toInt()
                 )
+                withContext(Dispatchers.Main) {
+                    _state.value = state.value.copy(
+                        categories = categories.sortedBy { it.name }.toList(),
+                        items = items.toList(),
+                        dueCount = due,
+                        overdueCount = overdue
+                    )
+                }
             }
         }
     }

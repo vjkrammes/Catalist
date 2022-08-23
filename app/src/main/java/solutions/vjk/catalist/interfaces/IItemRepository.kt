@@ -12,4 +12,6 @@ interface IItemRepository : IRepository<Item> {
     suspend fun complete(item: Item): RepositoryResult
     suspend fun countForCategory(categoryId: Int): Int
     suspend fun removeAssignee(itemId: Int): RepositoryResult
+    suspend fun itemCountByDueDate(listId: Int, dueDate: Int): Int
+    suspend fun itemsByDueDate(listId: Int, dueDate: Int): List<Item>
 }

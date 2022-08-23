@@ -1,14 +1,23 @@
 package solutions.vjk.catalist.widgets
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import solutions.vjk.catalist.R
+import solutions.vjk.catalist.infrastructure.DEFAULT_DATE
+import solutions.vjk.catalist.infrastructure.toInt
 import solutions.vjk.catalist.models.Item
+import solutions.vjk.catalist.ui.theme.yellow4
+import solutions.vjk.catalist.ui.theme.yellow5
 import java.util.*
 
 @Composable
@@ -59,13 +68,26 @@ fun Annotations(
                 modifier = Modifier.height(iconHeight)
             )
         }
-        if (item.dueDate.get(Calendar.YEAR) > 2020) {
+        if (item.dueDate != DEFAULT_DATE) {
+            val today = Calendar.getInstance()
+            val insevendays = Calendar.getInstance()
+            insevendays.add(Calendar.DAY_OF_YEAR, 7)
+            val tint = if (item.dueDate.toInt() < today.toInt()) {
+                MaterialTheme.colorScheme.error
+            } else {
+                if (item.dueDate.toInt() < insevendays.toInt()) {
+                    yellow5
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                }
+            }
             Image(
                 painterResource(
-                    id = R.drawable.ic_baseline_watch_later_24
+                    id = R.drawable.ic_baseline_calendar_month_24
                 ),
                 contentDescription = "",
-                modifier = Modifier.height(iconHeight)
+                modifier = Modifier.height(iconHeight),
+                colorFilter = ColorFilter.tint(tint)
             )
         }
     }

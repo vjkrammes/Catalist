@@ -10,6 +10,8 @@ data class ItemState(
     val lists: List<ToDoList> = emptyList(),
     val categories: List<Category> = emptyList(),
     val items: List<Item> = emptyList(),
+    val dueCount: Int = 0,
+    val overdueCount: Int = 0,
     val isLoading: Boolean = true,
     val errorMessage: String? = null
 )
