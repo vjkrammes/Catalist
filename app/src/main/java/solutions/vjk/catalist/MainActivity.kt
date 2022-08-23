@@ -48,7 +48,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             CatalistTheme {
                 val navController = rememberAnimatedNavController()
-                AnimatedNavHost(navController = navController, startDestination = "root") {
+                AnimatedNavHost(navController = navController, startDestination = "splashscreen") {
+                    composable(route = "splashscreen") {
+                        SplashScreen(navController = navController)
+                    }
                     composable(
                         route = "root",
                         exitTransition = {

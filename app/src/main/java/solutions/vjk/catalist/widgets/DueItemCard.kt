@@ -28,7 +28,6 @@ fun DueItemCard(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     backgroundAlpha: Float = 1f
 ) {
-    Log.i("Info", "Item id = ${item.id}, assignee = ${item.assignee?.name ?: "<null>"}")
     Row(
         modifier = Modifier
             .fillMaxWidth()
