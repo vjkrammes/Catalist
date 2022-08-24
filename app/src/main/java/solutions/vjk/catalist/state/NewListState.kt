@@ -8,7 +8,5 @@ data class NewListState(
     val lists: List<ToDoList>,
     val selectedList: ToDoList?,
     val displayedListName: String,
-    val switchOnCreate: Boolean,
-    val makeDefault: Boolean,
     val isLoading: Boolean
 )

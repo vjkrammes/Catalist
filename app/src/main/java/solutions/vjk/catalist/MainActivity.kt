@@ -118,6 +118,7 @@ class MainActivity : ComponentActivity() {
                             fadeOut(animationSpec = tween(300))
                         }
                     ) {
+                        openListViewModel.load()
                         openListViewModel.setCurrentList(mainViewModel.state.value.currentList.name)
                         OpenListPage(
                             state = openListViewModel.state.value,
@@ -143,8 +144,6 @@ class MainActivity : ComponentActivity() {
                             doSetName = newListViewModel::setName,
                             doToggleImport = newListViewModel::toggleImport,
                             doSelectList = newListViewModel::selectList,
-                            doToggleSwitch = newListViewModel::toggleSwitch,
-                            doToggleDefault = newListViewModel::toggleDefault,
                             doSave = newListViewModel::create,
                             toastMessage = newItemViewModel.toastMessage
                         )

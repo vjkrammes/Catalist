@@ -1,7 +1,6 @@
 package solutions.vjk.catalist.viewmodels
 
 import android.app.Application
-import android.content.Context.MODE_PRIVATE
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,8 +11,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import solutions.vjk.catalist.CURRENT_LIST_NAME
-import solutions.vjk.catalist.SHARED_PREFERENCES_NAME
 import solutions.vjk.catalist.infrastructure.asState
 import solutions.vjk.catalist.infrastructure.filterText
 import solutions.vjk.catalist.infrastructure.toInt
@@ -37,8 +34,6 @@ class NewListViewModel @Inject constructor(
             lists = emptyList(),
             selectedList = null,
             displayedListName = "",
-            switchOnCreate = true,
-            makeDefault = false,
             isLoading = true
         )
     )
@@ -95,20 +90,6 @@ class NewListViewModel @Inject constructor(
         )
     }
 
-    fun toggleSwitch() {
-        val newValue = !state.value.switchOnCreate
-        _state.value = state.value.copy(
-            switchOnCreate = newValue
-        )
-    }
-
-    fun toggleDefault() {
-        val newValue = !state.value.makeDefault
-        _state.value = state.value.copy(
-            makeDefault = newValue
-        )
-    }
-
     private fun importCategories() {
         viewModelScope.launch {
             if (state.value.selectedList != null) {
@@ -147,19 +128,7 @@ class NewListViewModel @Inject constructor(
                             if (state.value.importCategories) {
                                 importCategories()
                             }
-                            if (state.value.makeDefault) {
-                                val prefs = getApplication<Application>().getSharedPreferences(
-                                    SHARED_PREFERENCES_NAME, MODE_PRIVATE
-                                )
-                                val editor = prefs.edit()
-                                editor.putString(CURRENT_LIST_NAME, state.value.name)
-                                editor.commit()
-                            }
-                            if (state.value.switchOnCreate) {
-                                navController.navigate("switch/${state.value.name}")
-                            } else {
-                                sendToastMessage("List created successfully")
-                            }
+                            navController.navigate("switch/${state.value.name}")
                         } else {
                             sendToastMessage(result.getMessage())
                         }

@@ -28,8 +28,6 @@ fun NewListPage(
     doSetName: (String) -> Unit,
     doToggleImport: () -> Unit,
     doSelectList: (ToDoList) -> Unit,
-    doToggleSwitch: () -> Unit,
-    doToggleDefault: () -> Unit,
     doSave: (NavController) -> Unit,
     toastMessage: SharedFlow<String>
 ) {
@@ -168,42 +166,6 @@ fun NewListPage(
                                         }
                                     }
                                 }
-                            }
-                            Divider()
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(24.dp)
-                            ) {
-                                Switch(
-                                    checked = state.switchOnCreate,
-                                    onCheckedChange = { doToggleSwitch() },
-                                    colors = SwitchDefaults.colors(
-                                        checkedThumbColor = green3,
-                                        uncheckedThumbColor = gray4,
-                                        checkedTrackColor = green2,
-                                        uncheckedTrackColor = gray3,
-                                    )
-                                )
-                                Text(text = "Switch to new List")
-                            }
-                            Divider()
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(24.dp)
-                            ) {
-                                Switch(
-                                    checked = state.makeDefault,
-                                    onCheckedChange = { doToggleDefault() },
-                                    colors = SwitchDefaults.colors(
-                                        checkedThumbColor = green3,
-                                        uncheckedThumbColor = gray4,
-                                        checkedTrackColor = green2,
-                                        uncheckedTrackColor = gray3,
-                                    )
-                                )
-                                Text(text = "Make new list the Default")
                             }
                         }
                     }
