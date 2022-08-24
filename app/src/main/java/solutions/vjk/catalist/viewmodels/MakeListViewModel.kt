@@ -22,7 +22,7 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class NewListViewModel @Inject constructor(
+class MakeListViewModel @Inject constructor(
     private val listRepository: IListRepository,
     private val categoryRepository: ICategoryRepository,
     application: Application
@@ -72,7 +72,7 @@ class NewListViewModel @Inject constructor(
         val newValue = !state.value.importCategories
         if (newValue) {
             _state.value = state.value.copy(
-                importCategories = newValue,
+                importCategories = newValue
             )
         } else {
             _state.value = state.value.copy(
@@ -122,15 +122,22 @@ class NewListViewModel @Inject constructor(
             )
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
-                    val result = listRepository.insert(newList)
-                    withContext(Dispatchers.Main) {
-                        if (result.isSuccessResult) {
-                            if (state.value.importCategories) {
-                                importCategories()
+                    val existing = listRepository.read(state.value.name)
+                    if (existing == null) {
+                        val result = listRepository.insert(newList)
+                        withContext(Dispatchers.Main) {
+                            if (result.isSuccessResult) {
+                                if (state.value.importCategories) {
+                                    importCategories()
+                                }
+                                navController.navigate("switch/${state.value.name}")
+                            } else {
+                                sendToastMessage(result.getMessage())
                             }
-                            navController.navigate("switch/${state.value.name}")
-                        } else {
-                            sendToastMessage(result.getMessage())
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            sendToastMessage("Duplicate List Name")
                         }
                     }
                 }
@@ -145,8 +152,8 @@ class NewListViewModel @Inject constructor(
             listRepository: IListRepository,
             categoryRepository: ICategoryRepository,
             application: Application
-        ): NewListViewModel {
-            val vm = NewListViewModel(listRepository, categoryRepository, application)
+        ): MakeListViewModel {
+            val vm = MakeListViewModel(listRepository, categoryRepository, application)
             vm.loadLists()
             return vm
         }

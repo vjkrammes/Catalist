@@ -127,12 +127,12 @@ object CatalistModule {
     }
 
     @Provides
-    fun newListViewModelFactory(
+    fun makeListViewModelFactory(
         listRepository: IListRepository,
         categoryRepository: ICategoryRepository,
         application: Application
-    ): NewListViewModel {
-        return NewListViewModel.create(listRepository, categoryRepository, application)
+    ): MakeListViewModel {
+        return MakeListViewModel.create(listRepository, categoryRepository, application)
     }
 
     @Provides

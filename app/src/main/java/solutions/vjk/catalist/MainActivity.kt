@@ -35,10 +35,10 @@ class MainActivity : ComponentActivity() {
     private val dueItemViewModel: DueItemViewModel by viewModels()
     private val editItemViewModel: EditItemViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
+    private val makeListViewModel: MakeListViewModel by viewModels()
     private val manageAssigneesViewModel: ManageAssigneesViewModel by viewModels()
     private val manageCategoriesViewModel: ManageCategoriesViewModel by viewModels()
     private val newItemViewModel: NewItemViewModel by viewModels()
-    private val newListViewModel: NewListViewModel by viewModels()
     private val openListViewModel: OpenListViewModel by viewModels()
     private val settingsViewModel: SettingsViewModel by viewModels()
 
@@ -139,13 +139,13 @@ class MainActivity : ComponentActivity() {
                         }
                     ) {
                         NewListPage(
-                            state = newListViewModel.state.value,
+                            state = makeListViewModel.state.value,
                             navController = navController,
-                            doSetName = newListViewModel::setName,
-                            doToggleImport = newListViewModel::toggleImport,
-                            doSelectList = newListViewModel::selectList,
-                            doSave = newListViewModel::create,
-                            toastMessage = newItemViewModel.toastMessage
+                            doSetName = makeListViewModel::setName,
+                            doToggleImport = makeListViewModel::toggleImport,
+                            doSelectList = makeListViewModel::selectList,
+                            doSave = makeListViewModel::create,
+                            toastMessage = makeListViewModel.toastMessage
                         )
                     }
                     composable(route = "assignees",
