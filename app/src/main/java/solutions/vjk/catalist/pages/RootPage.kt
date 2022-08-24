@@ -1,6 +1,5 @@
 package solutions.vjk.catalist.pages
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -48,7 +46,6 @@ fun RootPage(
     val scaffoldState =
         rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
     val logoBitmap = ImageBitmap.imageResource(id = R.drawable.logo64)
     val (showNewItemDialog, setShowNewItemDialog) = remember { mutableStateOf(false) }
     val lora = FontFamily(Font(R.font.lora, weight = FontWeight.Normal))
@@ -67,7 +64,7 @@ fun RootPage(
     LaunchedEffect(key1 = Unit) {
         toastMessage
             .collect { message ->
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                scaffoldState.snackbarHostState.showSnackbar(message)
             }
     }
 
@@ -123,6 +120,15 @@ fun RootPage(
                         showOverdue = { showOverdue() }
                     )
                 },
+                bottomBar = {
+                    RootBottomAppBar(
+                        logo = logoBitmap,
+                        appName = stringResource(id = R.string.app_name),
+                        fontFamily = lora,
+                        fontStyle = FontStyle.Italic,
+                        fontSize = 24.sp
+                    )
+                },
                 floatingActionButton = {
                     RootFAB(
                         click = {
@@ -144,17 +150,8 @@ fun RootPage(
                     )
                 },
                 drawerShape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
-                bottomBar = {
-                    RootBottomAppBar(
-                        logo = logoBitmap,
-                        appName = stringResource(id = R.string.app_name),
-                        fontFamily = lora,
-                        fontStyle = FontStyle.Italic,
-                        fontSize = 24.sp
-                    )
-                },
                 snackbarHost = {
-
+                    SnackbarHost(hostState = scaffoldState.snackbarHostState)
                 },
                 content = {
                     Surface(

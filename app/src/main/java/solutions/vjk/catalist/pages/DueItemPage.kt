@@ -1,6 +1,5 @@
 package solutions.vjk.catalist.pages
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,13 +12,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.SharedFlow
 import solutions.vjk.catalist.state.DueItemState
-import solutions.vjk.catalist.widgets.*
+import solutions.vjk.catalist.widgets.DueItemCard
+import solutions.vjk.catalist.widgets.NavMenu
+import solutions.vjk.catalist.widgets.StandardBottomBar
+import solutions.vjk.catalist.widgets.StandardTopBar
 
 @Composable
 fun DueItemPage(
@@ -30,12 +31,11 @@ fun DueItemPage(
     val scaffoldState =
         rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         toastMessage
             .collect { message ->
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                scaffoldState.snackbarHostState.showSnackbar(message)
             }
     }
 
@@ -68,6 +68,9 @@ fun DueItemPage(
                     )
                 },
                 drawerShape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
+                snackbarHost = {
+                    SnackbarHost(hostState = scaffoldState.snackbarHostState)
+                },
                 content = {
                     Surface(
                         modifier = Modifier.padding(it)

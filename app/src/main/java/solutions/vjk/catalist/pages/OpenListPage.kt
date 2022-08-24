@@ -1,6 +1,5 @@
 package solutions.vjk.catalist.pages
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.SharedFlow
@@ -34,14 +32,13 @@ fun OpenListPage(
     val scaffoldState =
         rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     val selectedList = remember { mutableStateOf(ToDoList()) }
 
     LaunchedEffect(Unit) {
         toastMessage
             .collect { message ->
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                scaffoldState.snackbarHostState.showSnackbar(message)
             }
     }
 
@@ -89,6 +86,9 @@ fun OpenListPage(
                     )
                 },
                 drawerShape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
+                snackbarHost = {
+                    SnackbarHost(hostState = scaffoldState.snackbarHostState)
+                },
                 content = {
                     Card(
                         modifier = Modifier

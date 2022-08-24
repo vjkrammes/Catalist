@@ -1,6 +1,5 @@
 package solutions.vjk.catalist.pages
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.SharedFlow
@@ -36,7 +34,6 @@ fun ManageCategoriesPage(
     val scaffoldState =
         rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
     val (showInput, setShowInput) = remember { mutableStateOf(false) }
     val (showRenameDialog, setShowRenameDialog) = remember { mutableStateOf(false) }
 
@@ -52,7 +49,7 @@ fun ManageCategoriesPage(
     LaunchedEffect(Unit) {
         toastMessage
             .collect { message ->
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                scaffoldState.snackbarHostState.showSnackbar(message)
             }
     }
 
@@ -121,6 +118,9 @@ fun ManageCategoriesPage(
                     )
                 },
                 drawerShape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
+                snackbarHost = {
+                    SnackbarHost(hostState = scaffoldState.snackbarHostState)
+                },
                 content = {
                     if (state.categories.isEmpty()) {
                         Text(

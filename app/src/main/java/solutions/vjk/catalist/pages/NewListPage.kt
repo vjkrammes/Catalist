@@ -1,6 +1,5 @@
 package solutions.vjk.catalist.pages
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.SharedFlow
@@ -34,13 +32,12 @@ fun NewListPage(
     val scaffoldState =
         rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
     val isListExpanded = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         toastMessage
             .collect { message ->
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                scaffoldState.snackbarHostState.showSnackbar(message)
             }
     }
 
@@ -79,7 +76,7 @@ fun NewListPage(
                 },
                 drawerShape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
                 snackbarHost = {
-                    SnackbarHost(hostState = it)
+                    SnackbarHost(hostState = scaffoldState.snackbarHostState)
                 },
                 content = {
                     Surface(
