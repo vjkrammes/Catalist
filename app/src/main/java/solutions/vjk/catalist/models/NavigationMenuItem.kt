@@ -18,6 +18,7 @@ sealed class NavigationMenuItem(
 ) {
     override fun toString() = text
 
+    object All : NavigationMenuItem("allitems", R.drawable.ic_baseline_checklist_rtl_24, "All Items")
     object Home : NavigationMenuItem("root", R.drawable.ic_baseline_home_24, "Home")
     object OpenList :
         NavigationMenuItem("openlist", R.drawable.ic_baseline_description_24, "Open List")
@@ -39,15 +40,21 @@ sealed class NavigationMenuItem(
     object AboutCatalist :
         NavigationMenuItem("about", R.drawable.ic_outline_info_24, "About Catalist")
 
+    object Divider : NavigationMenuItem("", 0, "divider")
+
     companion object {
         fun getItems(): List<NavigationMenuItem> {
             return listOf(
                 Home,
                 OpenList,
                 NewList,
+                Divider,
                 ManageAssignees,
                 ManageCategories,
+                Divider,
+                All,
                 SearchItems,
+                Divider,
                 ListInfo,
                 Settings,
                 AboutCatalist

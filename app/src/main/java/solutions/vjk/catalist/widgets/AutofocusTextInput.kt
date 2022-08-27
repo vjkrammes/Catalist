@@ -1,6 +1,7 @@
 package solutions.vjk.catalist.widgets
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.input.KeyboardCapitalization
 
 @Composable
 fun AutofocusTextInput(
@@ -41,7 +43,10 @@ fun AutofocusTextInput(
                     onValueChange("")
                 }
             )
-        }
+        },
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Words
+        )
     )
 
     LaunchedEffect(Unit) {

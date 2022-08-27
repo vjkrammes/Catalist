@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Divider
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -38,21 +39,29 @@ fun NavigationDrawer(
             Divider(modifier = Modifier.height(4.dp))
         }
         items.forEach { item ->
-            NavigationDrawerItem(item = item, selected = false, onItemClick = {
-                keyboardController?.hide()
-                navController.navigate(item.route) {
-                    navController.graph.startDestinationRoute?.let { route ->
-                        popUpTo(route) {
-                            saveState = false
+            if (item.text == "divider") {
+                Divider(color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.25f))
+            } else {
+                NavigationDrawerItem(
+                    item = item,
+                    selected = false,
+                    onItemClick = {
+                        keyboardController?.hide()
+                        navController.navigate(item.route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = false
+                                }
+                            }
+                            launchSingleTop = true
+                            restoreState = false
+                        }
+                        scope.launch {
+                            scaffoldState.drawerState.close()
                         }
                     }
-                    launchSingleTop = true
-                    restoreState = false
-                }
-                scope.launch {
-                    scaffoldState.drawerState.close()
-                }
-            })
+                )
+            }
         }
     }
 }

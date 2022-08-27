@@ -30,6 +30,7 @@ private const val LIST_NAME: String = "listName"
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private val allItemsViewModel: AllItemsViewModel by viewModels()
     private val assigneeDetailViewModel: AssigneeDetailViewModel by viewModels()
     private val categoryDetailViewModel: CategoryDetailViewModel by viewModels()
     private val dueItemViewModel: DueItemViewModel by viewModels()
@@ -89,6 +90,27 @@ class MainActivity : ComponentActivity() {
                             mainViewModel.switchToList(listName)
                             navController.navigate("root")
                         }
+                    }
+                    composable(
+                        route = "allitems",
+                        enterTransition = {
+                            standardEnterTransition
+                            fadeIn(animationSpec = tween(300))
+                        },
+                        popExitTransition = {
+                            standardExitTransition
+                            fadeOut(animationSpec = tween(300))
+                        }
+                    ) {
+                        allItemsViewModel.load(mainViewModel.state.value.currentList)
+                        AllItemsPage(
+                            state = allItemsViewModel.state.value,
+                            navController = navController,
+                            doDelete = allItemsViewModel::deleteItem,
+                            doComplete = allItemsViewModel::completeItem,
+                            doEdit = { item -> navController.navigate("edit/${item.id}") },
+                            toastMessage = allItemsViewModel.toastMessage
+                        )
                     }
                     composable(
                         route = "dueitems",
