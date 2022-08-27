@@ -68,7 +68,7 @@ fun Annotations(
                 modifier = Modifier.height(iconHeight)
             )
         }
-        if (item.dueDate != DEFAULT_DATE) {
+        if (item.hasDueDate()) {
             val today = Calendar.getInstance()
             val insevendays = Calendar.getInstance()
             insevendays.add(Calendar.DAY_OF_YEAR, 7)

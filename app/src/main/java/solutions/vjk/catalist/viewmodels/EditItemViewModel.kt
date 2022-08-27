@@ -106,7 +106,7 @@ class EditItemViewModel @Inject constructor(
                             listId = item.listId,
                             categoryId = item.categoryId,
                             name = item.name,
-                            hasDueDate = item.dueDate != DEFAULT_DATE,
+                            hasDueDate = item.hasDueDate(),
                             dueDate = item.dueDate,
                             hasBudget = item.budget > 0,
                             budget = item.budget,
