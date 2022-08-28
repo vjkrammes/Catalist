@@ -54,14 +54,14 @@ class CategoryRepository @Inject constructor(private val dao: CategoryDao) : ICa
         return ret
     }
 
-    override suspend fun read(name: String): Category? {
+    override suspend fun read(listId: Int, name: String): Category? {
         var ret: Category? = null
         if (name.isEmpty()) {
             return null
         }
         withContext(Dispatchers.IO) {
             try {
-                ret = dao.read(name)
+                ret = dao.read(listId, name)
             } catch (ex: Exception) {
                 Log.e("DAO Failure/get", ex.message ?: "Unknown")
                 Log.e("DAO Failure/get", ex.printStackTrace().toString())

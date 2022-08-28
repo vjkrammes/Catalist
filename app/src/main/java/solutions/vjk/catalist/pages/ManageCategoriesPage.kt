@@ -29,6 +29,7 @@ fun ManageCategoriesPage(
     doNew: (String) -> Unit,
     doDelete: (Category) -> Unit,
     doDetails: (Category, NavController) -> Unit,
+    doRename: (Category, String) -> Unit,
     toastMessage: SharedFlow<String>
 ) {
     val scaffoldState =
@@ -80,7 +81,8 @@ fun ManageCategoriesPage(
     }
 
     fun ok() {
-
+        setShowRenameDialog(false)
+        doRename(renameState.value.category, renameState.value.newName)
     }
 
     Box(

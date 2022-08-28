@@ -238,6 +238,7 @@ class MainActivity : ComponentActivity() {
                             doNew = manageCategoriesViewModel::addCategory,
                             doDelete = manageCategoriesViewModel::deleteCategory,
                             doDetails = manageCategoriesViewModel::categoryDetails,
+                            doRename = manageCategoriesViewModel::renameCategory,
                             toastMessage = manageCategoriesViewModel.toastMessage
                         )
                         mainViewModel.refreshItems()

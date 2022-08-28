@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import solutions.vjk.catalist.infrastructure.asState
+import solutions.vjk.catalist.infrastructure.filterText
 import solutions.vjk.catalist.interfaces.ICategoryRepository
 import solutions.vjk.catalist.interfaces.IItemRepository
 import solutions.vjk.catalist.models.Category
@@ -122,6 +123,37 @@ class ManageCategoriesViewModel @Inject constructor(
             }
         } else {
             sendToastMessage("Category has assigned items")
+        }
+    }
+
+    fun renameCategory(category: Category, newName: String) {
+        if (category.id > 0 && newName.isNotEmpty()) {
+            val newCategory = category.copy(
+                id = category.id,
+                name = newName.filterText("\r\n")
+            )
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    val existing = categoryRepository.read(listId, newName)
+                    if (existing != null && existing.id != category.id) {
+                        withContext(Dispatchers.Main) {
+                            sendToastMessage("Duplicate category name")
+                        }
+                    } else {
+                        val result = categoryRepository.update(newCategory)
+                        val cats = categoryRepository.getForList(listId)
+                        withContext(Dispatchers.Main) {
+                            if (result.isSuccessResult) {
+                                _state.value = state.value.copy(
+                                    categories = cats.toList()
+                                )
+                            } else {
+                                sendToastMessage(result.getMessage())
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
