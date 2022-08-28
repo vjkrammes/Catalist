@@ -73,7 +73,6 @@ class MainActivity : ComponentActivity() {
                             doRenameCategory = mainViewModel::renameCategory,
                             addBasicItem = mainViewModel::addBasicItem,
                             addAdvancedItem = { navController.navigate("newitem") },
-                            noCategories = mainViewModel::noCategories,
                             toastMessage = mainViewModel.toastMessage
                         )
                     }

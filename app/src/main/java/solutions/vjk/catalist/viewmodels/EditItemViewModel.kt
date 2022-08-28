@@ -194,10 +194,6 @@ class EditItemViewModel @Inject constructor(
             sendToastMessage("Name is required")
             return
         }
-        if (state.value.selectedCategory == null) {
-            sendToastMessage("Please select a category")
-            return
-        }
         val newItem = Item(
             id = state.value.id,
             listId = state.value.listId,

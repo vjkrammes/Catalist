@@ -87,16 +87,11 @@ class NewItemViewModel @Inject constructor(
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     val categories = categoryRepository.getForList(listId)
-                    val selcat = categories.firstOrNull()
-                    val discat = selcat?.name ?: ""
                     withContext(Dispatchers.Main) {
                         _state.value = state.value.copy(
                             name = "",
                             listId = listId,
-                            categoryId = selcat?.id ?: 0,
                             categories = categories.toList(),
-                            selectedCategory = selcat,
-                            displayedCategoryName = discat,
                             isLoading = false
                         )
                     }
@@ -170,10 +165,10 @@ class NewItemViewModel @Inject constructor(
             sendToastMessage("Item name is required")
             return
         }
-        if (state.value.selectedCategory == null) {
-            sendToastMessage("Please select a category")
-            return
-        }
+//        if (state.value.selectedCategory == null) {
+//            sendToastMessage("Please select a category")
+//            return
+//        }
         val newItem = Item(
             id = 0,
             listId = state.value.listId,

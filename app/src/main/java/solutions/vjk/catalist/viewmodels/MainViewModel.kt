@@ -2,7 +2,6 @@ package solutions.vjk.catalist.viewmodels
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -58,12 +57,6 @@ class MainViewModel @Inject constructor(
     private fun sendToastMessage(message: String) {
         viewModelScope.launch {
             _toastMessage.emit(message)
-        }
-    }
-
-    fun noCategories() {
-        viewModelScope.launch {
-            _toastMessage.emit("No categories are defined")
         }
     }
 

@@ -1,8 +1,8 @@
 package solutions.vjk.catalist.pages
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +40,6 @@ fun RootPage(
     doRenameCategory: (Category, String) -> Unit,
     addBasicItem: (String, Category) -> Unit,
     addAdvancedItem: () -> Unit,
-    noCategories: () -> Unit,
     toastMessage: SharedFlow<String>
 ) {
     val scaffoldState =
@@ -132,11 +131,7 @@ fun RootPage(
                 floatingActionButton = {
                     RootFAB(
                         click = {
-                            if (state.categories.isEmpty()) {
-                                noCategories()
-                            } else {
-                                setShowNewItemDialog(true)
-                            }
+                            setShowNewItemDialog(true)
                         }
                     )
                 },
@@ -157,16 +152,37 @@ fun RootPage(
                     Surface(
                         modifier = Modifier.padding(it)
                     ) {
-                        CategoryWidget(
-                            categories = state.categories,
-                            items = state.items,
-                            onIncompleteClick = doComplete,
-                            onCompletedClick = doDelete,
-                            onItemClick = doEdit,
-                            onItemLongClick = { category -> doLongClick(category) },
-                            backgroundColor = MaterialTheme.colorScheme.primary,
-                            backgroundAlpha = 0.25f
-                        )
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            val uncat = state.items.filter { item -> item.categoryId == 0 }
+                            if (uncat.isNotEmpty()) {
+                                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                                    items(uncat) { item ->
+                                        Row {
+                                            ItemCard(
+                                                item = item,
+                                                onButtonClick = if (item.complete) doDelete else doComplete,
+                                                onItemClick = doEdit,
+                                                backgroundColor = MaterialTheme.colorScheme.primary,
+                                                backgroundAlpha = 0.25f
+                                            )
+                                        }
+                                        Divider()
+                                    }
+                                }
+                            }
+                            CategoryWidget(
+                                categories = state.categories,
+                                items = state.items,
+                                onIncompleteClick = doComplete,
+                                onCompletedClick = doDelete,
+                                onItemClick = doEdit,
+                                onItemLongClick = { category -> doLongClick(category) },
+                                backgroundColor = MaterialTheme.colorScheme.primary,
+                                backgroundAlpha = 0.25f
+                            )
+                        }
                     }
                 }
             )
