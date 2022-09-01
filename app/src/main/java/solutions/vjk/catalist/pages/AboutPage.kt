@@ -82,8 +82,10 @@ fun AboutPage(
         ),
         LinkTextItem(text = " for its user interface. It is a categorized to-do app, with a few "),
         LinkTextItem(text = "twists: it allows the user to assign tasks to others, set "),
-        LinkTextItem(text = "due dates, or even attach a budget. Multiple lists can be maintaned "),
-        LinkTextItem(text = "with separate categories per list. Data is stored using "),
+        LinkTextItem(text = "due dates, or even attach a budget. Multiple lists can be maintained "),
+        LinkTextItem(text = "with separate categories per list. Categories are optional, and "),
+        LinkTextItem(text = "categorized and uncategorized items can be mixed within the same list. "),
+        LinkTextItem(text = "Data is stored using "),
         LinkTextItem(
             text = "SQLite",
             tag = "Database",
@@ -133,7 +135,10 @@ fun AboutPage(
                         .padding(top = 32.dp),
                     elevation = 24.dp
                 ) {
-                    LinkText(linkTextItems = narrativeItems)
+                    LinkText(
+                        modifier = Modifier.padding(all = 12.dp),
+                        linkTextItems = narrativeItems
+                    )
                 }
                 Spacer(modifier = Modifier.size(16.dp))
                 for (item in items) {

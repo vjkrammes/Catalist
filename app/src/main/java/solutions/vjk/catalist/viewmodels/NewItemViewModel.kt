@@ -165,10 +165,6 @@ class NewItemViewModel @Inject constructor(
             sendToastMessage("Item name is required")
             return
         }
-//        if (state.value.selectedCategory == null) {
-//            sendToastMessage("Please select a category")
-//            return
-//        }
         val newItem = Item(
             id = 0,
             listId = state.value.listId,

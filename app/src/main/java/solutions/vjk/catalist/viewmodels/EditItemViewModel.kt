@@ -131,7 +131,7 @@ class EditItemViewModel @Inject constructor(
     // state update functions
 
     fun setName(name: String) {
-        _state.value = state.value.copy(name = name.filterText("\r\n"))
+        _state.value = state.value.copy(name = name)
     }
 
     fun setAssignee(assignee: Assignee?) {
