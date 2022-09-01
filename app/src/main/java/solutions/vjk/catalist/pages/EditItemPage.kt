@@ -9,9 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -43,6 +41,7 @@ fun EditItemPage(
     val scaffoldState =
         rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
     val scope = rememberCoroutineScope()
+    val name = remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         toastMessage
@@ -51,9 +50,22 @@ fun EditItemPage(
             }
     }
 
+    LaunchedEffect(state.name) {
+        name.value = state.name
+    }
+
     fun deleteItem() {
         doDelete()
         navController.navigate("root")
+    }
+
+    fun changeName(value: String) {
+        name.value = value
+    }
+
+    fun save() {
+        doSetName(name.value)
+        doSave()
     }
 
     Box(
@@ -80,7 +92,7 @@ fun EditItemPage(
                     )
                 },
                 floatingActionButton = {
-                    EditFAB(click = doSave)
+                    EditFAB(click = { save() })
                 },
                 isFloatingActionButtonDocked = true,
                 floatingActionButtonPosition = FabPosition.End,
@@ -105,7 +117,7 @@ fun EditItemPage(
                             .fillMaxWidth()
                     ) {
                         Column {
-                            NameWidget(name = state.name, valueChanged = doSetName)
+                            NameWidget(name = name.value, valueChanged = { v -> changeName(v) })
                             Divider(color = gray1, modifier = Modifier.padding(vertical = 4.dp))
                             SelectCategoryWidget(
                                 displayedCategoryName = state.displayedCategoryName,
