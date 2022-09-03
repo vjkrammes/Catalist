@@ -131,6 +131,7 @@ fun RootPage(
                 floatingActionButton = {
                     RootFAB(
                         click = {
+                            selectedCategory.value = Category()
                             setShowNewItemDialog(true)
                         }
                     )

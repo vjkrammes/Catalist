@@ -44,7 +44,7 @@ fun NewItemDialog(
     if (displayedCategoryName.value != selectedCategory.name) {
         val c = categories.singleOrNull { it.name == selectedCategory.name }
         if (c == null) {
-            displayedCategoryName.value = categories[0].name
+            displayedCategoryName.value = ""
         } else {
             displayedCategoryName.value = c.name
         }

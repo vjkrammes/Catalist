@@ -9,9 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -46,11 +44,22 @@ fun NewItemPage(
     val scope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    val name = remember { mutableStateOf("") }
+
     LaunchedEffect(Unit) {
         toastMessage
             .collect { message ->
                 scaffoldState.snackbarHostState.showSnackbar(message)
             }
+    }
+
+    fun changeName(value: String) {
+        name.value = value
+    }
+
+    fun save() {
+        doSetName(name.value)
+        doSave()
     }
 
     Box(
@@ -72,7 +81,7 @@ fun NewItemPage(
                             IconButton(
                                 onClick = {
                                     keyboardController?.hide()
-                                    doSave()
+                                    save()
                                 }
                             ) {
                                 Icon(
@@ -104,7 +113,7 @@ fun NewItemPage(
                             .fillMaxWidth()
                     ) {
                         Column {
-                            NameWidget(name = state.name, valueChanged = doSetName)
+                            NameWidget(name = name.value, valueChanged = { name -> changeName(name) })
                             Divider(color = gray1, modifier = Modifier.padding(vertical = 4.dp))
                             SelectCategoryWidget(
                                 displayedCategoryName = state.displayedCategoryName,
